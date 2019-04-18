@@ -58,7 +58,8 @@ The match type is used to match the from, and the following are supported:
 * **substring**: on a partial match of the part
 * **prefix**: when the part begins with the matching string
 * **suffix**: when the part ends with the matching string
-* **regex**: when the part matches a regular expression
+* **regex**: when the part matches a regular expression and matched regexes are used in the TO
+* **fullregex**: when the part matches a regular expression and matched regexes are not used in the TO
 
 ## Examples
 

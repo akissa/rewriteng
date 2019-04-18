@@ -13,19 +13,21 @@ import (
 )
 
 const (
-	// ExactMatch matches only on exact match of the name in the question section of a request
+	// ExactMatch matches only on exact match of the part
 	ExactMatch = "exact"
-	// PrefixMatch matches when the name begins with the matching string
+	// PrefixMatch matches when the part begins with the matching string
 	PrefixMatch = "prefix"
-	// SuffixMatch matches when the name ends with the matching string
+	// SuffixMatch matches when the part ends with the matching string
 	SuffixMatch = "suffix"
-	// SubstringMatch matches on partial match of the name in the question section of a request
+	// SubstringMatch matches on partial match of the part
 	SubstringMatch = "substring"
-	// RegexMatch matches when the name in the question section of a request matches a regular expression
+	// RegexMatch matches when the part matches a regular expression and the regex is used in the rewrite
 	RegexMatch = "regex"
-	namePart   = "name"
-	dataPart   = "data"
-	bothPart   = "both"
+	// FullRegexMatch matchs when the part matches a regular expression and the regex is not used in the rewrite
+	FullRegexMatch = "fullregex"
+	namePart       = "name"
+	dataPart       = "data"
+	bothPart       = "both"
 )
 
 const (
@@ -70,6 +72,12 @@ type substringRule struct {
 }
 
 type regexRule struct {
+	rrPart      string
+	Pattern     *regexp.Regexp
+	Replacement string
+}
+
+type fullRegexRule struct {
 	rrPart      string
 	Pattern     *regexp.Regexp
 	Replacement string
@@ -198,6 +206,25 @@ func (rule *regexRule) RRPart() string {
 	return rule.rrPart
 }
 
+func (rule *fullRegexRule) Rewrite(ctx context.Context, state request.Request) Result {
+	if rule.Pattern.MatchString(state.Name()) {
+		state.Req.Question[0].Name = rule.Replacement
+		return RewriteDone
+	}
+	return RewriteIgnored
+}
+
+func (rule *fullRegexRule) Sub(n string) (o string) {
+	if rule.Pattern.MatchString(n) {
+		o = rule.Replacement
+	}
+	return
+}
+
+func (rule *fullRegexRule) RRPart() string {
+	return rule.rrPart
+}
+
 func (rule *nameRule) Rewrite(ctx context.Context, state request.Request) Result {
 	if rule.RRClass != dns.ClassANY && state.QClass() != rule.RRClass {
 		return RewriteIgnored
@@ -298,8 +325,19 @@ func newRule(args ...string) (Rule, error) {
 			rewriteQuestionFromPattern,
 			rewriteQuestionTo,
 		}, nil
+	case FullRegexMatch:
+		rewriteQuestionFromPattern, err := regexp.Compile(from)
+		if err != nil {
+			return nil, err
+		}
+		rewriteQuestionTo := plugin.Name(to).Normalize()
+		return &fullRegexRule{
+			rrPart,
+			rewriteQuestionFromPattern,
+			rewriteQuestionTo,
+		}, nil
 	default:
-		return nil, fmt.Errorf("Only exact, prefix, suffix, substring, and regex rule types are supported, received: %s", mt)
+		return nil, fmt.Errorf("Only exact, prefix, suffix, substring, regex, fullregex rule types are supported, received: %s", mt)
 	}
 }
 
