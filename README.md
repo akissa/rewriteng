@@ -29,8 +29,7 @@ rewriteng CLASS RR-TYPE TYPE FROM-DOMAIN TO-DOMAIN {
 The rule syntax is as follows:
 
 ~~~
-# rule type                 rr part          match type                          from   to
-answer|additional|authority [name|data|both] exact|prefix|suffix|substring|regex STRING STRING
+rule-type [rr-part] match-type FROM TO
 ~~~
 
 #### Rule type
