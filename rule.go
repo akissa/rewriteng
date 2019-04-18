@@ -221,7 +221,7 @@ func (rule *nameRule) Sub(n, t, pt string) (o string) {
 		return
 	}
 	for _, rule := range rules {
-		if pt != bothPart && pt != rule.RRPart() {
+		if rule.RRPart() != bothPart && pt != rule.RRPart() {
 			continue
 		}
 		if s := rule.Sub(n); s != "" {
