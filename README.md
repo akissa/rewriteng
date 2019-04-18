@@ -56,8 +56,6 @@ The match type, i.e. `exact`, `substring`, etc., triggers re-write:
 * **suffix**: when the name ends with the matching string
 * **regex**: when the name in the question section of a request matches a regular expression
 
-If the match type is omitted, the `exact` match type is being assumed.
-
 ## Examples
 
 The following rewrites queries to `x.example.com` to `x.yahoo.com`, it also rewrites the
