@@ -330,11 +330,11 @@ func newRule(args ...string) (Rule, error) {
 		if err != nil {
 			return nil, err
 		}
-		rewriteQuestionTo := plugin.Name(to).Normalize()
+		// rewriteQuestionTo := plugin.Name(to).Normalize()
 		return &fullRegexRule{
 			rrPart,
 			rewriteQuestionFromPattern,
-			rewriteQuestionTo,
+			to,
 		}, nil
 	default:
 		return nil, fmt.Errorf("Only exact, prefix, suffix, substring, regex, fullregex rule types are supported, received: %s", mt)
