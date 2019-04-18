@@ -32,15 +32,15 @@ The rule syntax is as follows:
 rule-type [rr-part] match-type FROM TO
 ~~~
 
-#### Rule type
+#### rule-type
 
 The following rule types are supported:
 
 * **answer**: rewrites answers, atleast one answer is required multiple rules are allowed
-* **additional**: rewrites the additional section, these are optional and multiple rules are allowed
-* **authority**: rewrites the authority section, these are optional and multiple rules are allowed
+* **additional**: rewrites the additional section, additional rules are optional and multiple rules are allowed
+* **authority**: rewrites the authority section, authority rules are optional and multiple rules are allowed
 
-#### RR part
+#### rr-part
 
 The following RR parts are supported:
 
@@ -50,11 +50,11 @@ The following RR parts are supported:
 
 If the RR part is omitted, the `name` RR part is assumed.
 
-#### Match type
+#### match-type
 
-The match type, i.e. `exact`, `substring`, etc., triggers re-write:
+The match type is used to match the from, and the following are supported:
 
-* **exact** (default): on exact match of the name in the question section of a request
+* **exact**: on exact match of the name in the question section of a request
 * **substring**: on a partial match of the name in the question section of a request
 * **prefix**: when the name begins with the matching string
 * **suffix**: when the name ends with the matching string
