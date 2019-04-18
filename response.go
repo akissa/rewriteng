@@ -2,6 +2,7 @@ package rewriteng
 
 import (
 	"net"
+	"strings"
 
 	"github.com/miekg/dns"
 )
@@ -103,13 +104,13 @@ func rewriteDataParts(rr dns.RR, rule *nameRule, ruleType string) {
 		t.Txt = tmpRecs
 	case *dns.A:
 		if s := rule.Sub(t.A.String(), ruleType, dataPart); s != "" {
-			if ip := net.ParseIP(s); ip != nil {
+			if ip := net.ParseIP(s); ip != nil && strings.Contains(s, ".") {
 				t.A = ip
 			}
 		}
 	case *dns.AAAA:
 		if s := rule.Sub(t.AAAA.String(), ruleType, dataPart); s != "" {
-			if ip := net.ParseIP(s); ip != nil {
+			if ip := net.ParseIP(s); ip != nil && strings.Contains(s, ":") {
 				t.AAAA = ip
 			}
 		}
