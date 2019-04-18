@@ -4,6 +4,7 @@ import (
 	"net"
 	"strings"
 
+	"github.com/coredns/coredns/plugin"
 	"github.com/miekg/dns"
 )
 
@@ -90,7 +91,7 @@ func rewriteDataParts(rr dns.RR, rule *nameRule, ruleType string) {
 	switch t := rr.(type) {
 	case *dns.CNAME:
 		if s := rule.Sub(t.Target, ruleType, dataPart); s != "" {
-			t.Target = s
+			t.Target = plugin.Name(s).Normalize()
 		}
 	case *dns.TXT:
 		tmpRecs := t.Txt[:0]
@@ -116,18 +117,18 @@ func rewriteDataParts(rr dns.RR, rule *nameRule, ruleType string) {
 		}
 	case *dns.NS:
 		if s := rule.Sub(t.Ns, ruleType, dataPart); s != "" {
-			t.Ns = s
+			t.Ns = plugin.Name(s).Normalize()
 		}
 	case *dns.SOA:
 		if s := rule.Sub(t.Ns, ruleType, dataPart); s != "" {
-			t.Ns = s
+			t.Ns = plugin.Name(s).Normalize()
 		}
 		if s := rule.Sub(t.Mbox, ruleType, dataPart); s != "" {
-			t.Mbox = s
+			t.Mbox = plugin.Name(s).Normalize()
 		}
 	case *dns.SRV:
 		if s := rule.Sub(t.Target, ruleType, dataPart); s != "" {
-			t.Target = s
+			t.Target = plugin.Name(s).Normalize()
 		}
 	}
 }
