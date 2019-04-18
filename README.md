@@ -43,8 +43,13 @@ The following rule types are supported:
 
 #### RR part
 
-All rules allow for rewriting the rr part, the `name` and `data` options are used to specify which
-part to rewrite. If the part is omitted, the `name` part is assumed.
+The following RR parts are supported:
+
+* **name**: rewrites the name part
+* **data**: rewrites the data part
+* **both**: rewrites both the name and data parts
+
+If the RR part is omitted, the `name` RR part is assumed.
 
 #### Match type
 

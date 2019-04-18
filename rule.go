@@ -25,6 +25,7 @@ const (
 	RegexMatch = "regex"
 	namePart   = "name"
 	dataPart   = "data"
+	bothPart   = "both"
 )
 
 const (
@@ -220,7 +221,7 @@ func (rule *nameRule) Sub(n, t, pt string) (o string) {
 		return
 	}
 	for _, rule := range rules {
-		if pt != rule.RRPart() {
+		if pt != bothPart && pt != rule.RRPart() {
 			continue
 		}
 		if s := rule.Sub(n); s != "" {
@@ -249,10 +250,8 @@ func newRule(args ...string) (Rule, error) {
 		to = args[2]
 	}
 
-	switch rrPart {
-	case namePart, dataPart:
-	default:
-		return nil, fmt.Errorf("Only name, data RR parts are supported, received: %s", rrPart)
+	if rrPart != bothPart && rrPart != namePart && rrPart != dataPart {
+		return nil, fmt.Errorf("Only (name, data, both) RR parts are supported, received: %s", rrPart)
 	}
 
 	if mt == ExactMatch || mt == SuffixMatch {
