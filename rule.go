@@ -208,7 +208,7 @@ func (rule *regexRule) RRPart() string {
 
 func (rule *fullRegexRule) Rewrite(ctx context.Context, state request.Request) Result {
 	if rule.Pattern.MatchString(state.Name()) {
-		state.Req.Question[0].Name = rule.Replacement
+		state.Req.Question[0].Name = plugin.Name(rule.Replacement).Normalize()
 		return RewriteDone
 	}
 	return RewriteIgnored
@@ -330,7 +330,6 @@ func newRule(args ...string) (Rule, error) {
 		if err != nil {
 			return nil, err
 		}
-		// rewriteQuestionTo := plugin.Name(to).Normalize()
 		return &fullRegexRule{
 			rrPart,
 			rewriteQuestionFromPattern,
