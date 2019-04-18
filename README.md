@@ -54,11 +54,11 @@ If the RR part is omitted, the `name` RR part is assumed.
 
 The match type is used to match the from, and the following are supported:
 
-* **exact**: on exact match of the name in the question section of a request
-* **substring**: on a partial match of the name in the question section of a request
-* **prefix**: when the name begins with the matching string
-* **suffix**: when the name ends with the matching string
-* **regex**: when the name in the question section of a request matches a regular expression
+* **exact**: on exact match of the part
+* **substring**: on a partial match of the part
+* **prefix**: when the part begins with the matching string
+* **suffix**: when the part ends with the matching string
+* **regex**: when the part matches a regular expression
 
 ## Examples
 
