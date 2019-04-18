@@ -12,9 +12,9 @@ The rewriteng plugin rewrites queries and responses
 
 ~~~
 rewriteng CLASS RR-TYPE TYPE FROM-DOMAIN TO-DOMAIN {
-    answer [name|data] exact|prefix|suffix|substring|regex STRING STRING
-    additional [name|data] exact|prefix|suffix|substring|regex STRING STRING
-    authority [name|data] exact|prefix|suffix|substring|regex STRING STRING
+    answer [name|data|both] exact|prefix|suffix|substring|regex STRING STRING
+    additional [name|data|both] exact|prefix|suffix|substring|regex STRING STRING
+    authority [name|data|both] exact|prefix|suffix|substring|regex STRING STRING
 }
 ~~~
 
@@ -29,8 +29,8 @@ rewriteng CLASS RR-TYPE TYPE FROM-DOMAIN TO-DOMAIN {
 The rule syntax is as follows:
 
 ~~~
-# rule type                 rr part     match type                          from   to
-answer|additional|authority [name|data] exact|prefix|suffix|substring|regex STRING STRING
+# rule type                 rr part          match type                          from   to
+answer|additional|authority [name|data|both] exact|prefix|suffix|substring|regex STRING STRING
 ~~~
 
 #### Rule type
