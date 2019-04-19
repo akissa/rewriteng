@@ -96,6 +96,7 @@ type nameRule struct {
 func (rule *exactRule) Rewrite(ctx context.Context, state request.Request) Result {
 	if rule.From == state.Name() {
 		state.Req.Question[0].Name = rule.To
+		state.Req.RecursionDesired = true
 		return RewriteDone
 	}
 	return RewriteIgnored
@@ -115,6 +116,7 @@ func (rule *exactRule) RRPart() string {
 func (rule *prefixRule) Rewrite(ctx context.Context, state request.Request) Result {
 	if strings.HasPrefix(state.Name(), rule.Prefix) {
 		state.Req.Question[0].Name = rule.Replacement + strings.TrimPrefix(state.Name(), rule.Prefix)
+		state.Req.RecursionDesired = true
 		return RewriteDone
 	}
 	return RewriteIgnored
@@ -134,6 +136,7 @@ func (rule *prefixRule) RRPart() string {
 func (rule *suffixRule) Rewrite(ctx context.Context, state request.Request) Result {
 	if strings.HasSuffix(state.Name(), rule.Suffix) {
 		state.Req.Question[0].Name = strings.TrimSuffix(state.Name(), rule.Suffix) + rule.Replacement
+		state.Req.RecursionDesired = true
 		return RewriteDone
 	}
 	return RewriteIgnored
@@ -153,6 +156,7 @@ func (rule *suffixRule) RRPart() string {
 func (rule *substringRule) Rewrite(ctx context.Context, state request.Request) Result {
 	if strings.Contains(state.Name(), rule.Substring) {
 		state.Req.Question[0].Name = strings.Replace(state.Name(), rule.Substring, rule.Replacement, -1)
+		state.Req.RecursionDesired = true
 		return RewriteDone
 	}
 	return RewriteIgnored
@@ -182,6 +186,7 @@ func (rule *regexRule) Rewrite(ctx context.Context, state request.Request) Resul
 		}
 	}
 	state.Req.Question[0].Name = s
+	state.Req.RecursionDesired = true
 	return RewriteDone
 }
 
@@ -209,6 +214,7 @@ func (rule *regexRule) RRPart() string {
 func (rule *fullRegexRule) Rewrite(ctx context.Context, state request.Request) Result {
 	if rule.Pattern.MatchString(state.Name()) {
 		state.Req.Question[0].Name = plugin.Name(rule.Replacement).Normalize()
+		state.Req.RecursionDesired = true
 		return RewriteDone
 	}
 	return RewriteIgnored

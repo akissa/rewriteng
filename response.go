@@ -13,6 +13,7 @@ type ResponseRewriter struct {
 	dns.ResponseWriter
 	originalQuestion dns.Question
 	Rules            []*nameRule
+	recursionDesired bool
 }
 
 // NewResponseRewriter returns a pointer to a new ResponseRewriter.
@@ -20,12 +21,14 @@ func NewResponseRewriter(w dns.ResponseWriter, r *dns.Msg) *ResponseRewriter {
 	return &ResponseRewriter{
 		ResponseWriter:   w,
 		originalQuestion: r.Question[0],
+		recursionDesired: r.RecursionDesired,
 	}
 }
 
 // WriteMsg records the status code and calls the underlying ResponseWriter's WriteMsg method.
 func (r *ResponseRewriter) WriteMsg(res *dns.Msg) error {
 	res.Question[0] = r.originalQuestion
+	res.RecursionDesired = r.recursionDesired
 	// Answers
 	r.rewriteAnswers(res)
 	// Authority
