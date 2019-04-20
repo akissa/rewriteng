@@ -34,7 +34,7 @@ rule-type [rr-part] match-type FROM TO
 
 #### rule-type
 
-The following rule types are supported:
+The following rule-types are supported:
 
 * **answer**: rewrites answers, atleast one answer is required multiple rules are allowed
 * **additional**: rewrites the additional section, additional rules are optional and multiple rules are allowed
@@ -42,17 +42,17 @@ The following rule types are supported:
 
 #### rr-part
 
-The following RR parts are supported:
+The following rr-parts are supported:
 
 * **name**: rewrites the name part
 * **data**: rewrites the data part
 * **both**: rewrites both the name and data parts
 
-If the RR part is omitted, the `name` RR part is assumed.
+If the rr-part is omitted, the `name` rr-part is assumed.
 
 #### match-type
 
-The match type is used to match the from, and the following are supported:
+The match-type is used to match the from, and the following are supported:
 
 * **exact**: on exact match of the part
 * **substring**: on a partial match of the part
@@ -156,4 +156,5 @@ yf2.example.com.	1179	IN	A	192.168.1.2
 
 ## Also See
 
-See the original rewrite plugin it is used as the basis for this plugin.
+See the [original rewrite plugin](https://github.com/coredns/coredns/tree/master/plugin/rewrite)
+was is used as the basis for this plugin.
