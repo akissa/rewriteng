@@ -2,6 +2,7 @@ package rewriteng
 
 import (
 	"net"
+	"strconv"
 	"strings"
 
 	"github.com/coredns/coredns/plugin"
@@ -128,6 +129,11 @@ func rewriteDataParts(rr dns.RR, rule *nameRule, ruleType string) {
 		}
 		if s := rule.Sub(t.Mbox, ruleType, dataPart); s != "" {
 			t.Mbox = plugin.Name(s).Normalize()
+		}
+		if s := rule.Sub(strconv.FormatInt(int64(t.Minttl), 10), ruleType, dataPart); s != "" {
+			if i, err := strconv.ParseUint(s, 10, 32); err == nil {
+				t.Minttl = uint32(i)
+			}
 		}
 	case *dns.SRV:
 		if s := rule.Sub(t.Target, ruleType, dataPart); s != "" {
