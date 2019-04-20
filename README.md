@@ -157,4 +157,4 @@ yf2.example.com.	1179	IN	A	192.168.1.2
 ## Also See
 
 See the [original rewrite plugin](https://github.com/coredns/coredns/tree/master/plugin/rewrite)
-was is used as the basis for this plugin.
+it was used as the basis for this plugin.
