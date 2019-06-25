@@ -1,4 +1,4 @@
-module git.baruwa.io/baruwa-enterprise/rewriteng
+module github.com/kapilth/rewriteng-1
 
 go 1.12
 
