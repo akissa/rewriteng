@@ -1,4 +1,4 @@
-module github.com/kapilth/rewriteng-1
+module github.com/kapilth/rewriteng
 
 go 1.12
 
