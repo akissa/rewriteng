@@ -1,4 +1,4 @@
-module github.com/akissa/rewriteng
+module github.com/kapilth/rewriteng
 
 go 1.12
 
