@@ -1,4 +1,4 @@
-module github.com/akissa/rewriteng
+module git.baruwa.io/baruwa-enterprise/rewriteng
 
 go 1.12
 
