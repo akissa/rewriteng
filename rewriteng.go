@@ -28,10 +28,10 @@ func (h RewriteNG) Name() string {
 // ServeDNS implements the plugin.Handler interface.
 func (h RewriteNG) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (int, error) {
 	wr := NewResponseRewriter(w, r)
-	log.Infof("plug-in calls RewriteNG")
+	log.Debugf("plug-in calls RewriteNG")
 	state := request.Request{W: w, Req: r}
 	for _, rule := range h.Rules {
-		log.Infof("plug-in calls RewriteNG")
+		log.Debugf("plug-in calls RewriteNG")
 		switch result := rule.Rewrite(ctx, state); result {
 		case RewriteDone:
 			if !validName(state.Req.Question[0].Name) {
@@ -41,7 +41,7 @@ func (h RewriteNG) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Ms
 				return dns.RcodeServerFailure, fmt.Errorf("invalid name after rewrite: %s", x)
 			}
 			wr.Rules = append(wr.Rules, rule)
-			log.Infof("Calling next plugin: %s", h.Name())
+			log.Debugf("Calling next plugin: %s", h.Name())
 			return plugin.NextOrFailure(h.Name(), h.Next, ctx, wr, r)
 		default:
 		}

@@ -42,7 +42,7 @@ func (r *ResponseRewriter) WriteMsg(res *dns.Msg) error {
 
 func (r *ResponseRewriter) rewriteAnswers(res *dns.Msg) {
 
-	log.Infof("In ResponseWriter %v", res)
+	log.Debugf("In ResponseWriter %v", res)
 
 	for _, rr := range res.Answer {
 		var nameWriten bool
@@ -55,7 +55,7 @@ func (r *ResponseRewriter) rewriteAnswers(res *dns.Msg) {
 				}
 			}
 			// Rewrite Data
-			log.Infof("calling rewriteAnswers -> rewriteDataParts for rr %v rule %v answerRule %s ", rr, rule, answerRule)
+			log.Debugf("calling rewriteAnswers -> rewriteDataParts for rr %v rule %v answerRule %s ", rr, rule, answerRule)
 			rewriteDataParts(rr, rule, answerRule)
 		}
 	}
@@ -73,7 +73,7 @@ func (r *ResponseRewriter) rewriteAuthority(res *dns.Msg) {
 				}
 			}
 			// Rewrite Data
-			log.Infof("calling rewriteAuthority -> rewriteDataParts for rr %v rule %v answerRule %s ", rr, rule, authorityRule)
+			log.Debugf("calling rewriteAuthority -> rewriteDataParts for rr %v rule %v answerRule %s ", rr, rule, authorityRule)
 			rewriteDataParts(rr, rule, authorityRule)
 		}
 	}
@@ -91,7 +91,7 @@ func (r *ResponseRewriter) rewriteAdditional(res *dns.Msg) {
 				}
 			}
 			// Rewrite Data
-			log.Infof("calling rewriteAdditional-> rewriteDataParts for rr %v rule %v answerRule %s ", rr, rule, additionalRule)
+			log.Debugf("calling rewriteAdditional-> rewriteDataParts for rr %v rule %v answerRule %s ", rr, rule, additionalRule)
 			rewriteDataParts(rr, rule, additionalRule)
 		}
 	}
@@ -146,11 +146,11 @@ func rewriteDataParts(rr dns.RR, rule *nameRule, ruleType string) {
 			t.Target = plugin.Name(s).Normalize()
 		}
 	case *dns.PTR:
-		log.Infof("Rewrite PTR  rr \"%s\"", rr)
+		log.Debugf("Rewrite PTR  rr \"%s\"", rr)
 		if s := rule.Sub(t.Ptr, ruleType, dataPart); s != "" {
-			log.Infof("Replacement %s", s)
+			log.Debugf("Replacement %s", s)
 			t.Ptr = plugin.Name(s).Normalize()
-			log.Infof("Rewrite PTR  t.ptr %s", t.Ptr)
+			log.Debugf("Rewrite PTR  t.ptr %s", t.Ptr)
 		}
 	}
 }
