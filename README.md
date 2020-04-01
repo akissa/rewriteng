@@ -60,7 +60,7 @@ The match-type is used to match the from, and the following are supported:
 * **suffix**: when the part ends with the matching string
 * **regex**: when the part matches a regular expression and matched regexes are used in the TO
 * **fullregex**: when the part matches a regular expression and matched regexes are not used in the TO
-* **noop**: place holder that does not make any modifications
+* **noop**: when the part ends with the matching string, this is a place holder that does not make any modifications
 
 ## Examples
 
