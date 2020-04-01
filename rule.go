@@ -239,7 +239,7 @@ func (rule *fullRegexRule) RRPart() string {
 }
 
 func (rule *noOpRule) Rewrite(ctx context.Context, state request.Request) Result {
-	if rule.From == state.Name() {
+	if strings.HasSuffix(state.Name(), rule.From) {
 		state.Req.RecursionDesired = true
 		return RewriteDone
 	}
@@ -247,7 +247,7 @@ func (rule *noOpRule) Rewrite(ctx context.Context, state request.Request) Result
 }
 
 func (rule *noOpRule) Sub(n string) (o string) {
-	if rule.From == n {
+	if strings.HasSuffix(n, rule.From) {
 		o = rule.From
 	}
 	return
