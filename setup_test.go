@@ -60,6 +60,13 @@ func TestParse(t *testing.T) {
 					}`,
 			false,
 		},
+		// pass
+		{
+			`rewriteng ANY ANY noop example.org example.org {
+				answer noop example\.com example.org
+			}`,
+			false,
+		},
 	}
 
 	for i, test := range tests {

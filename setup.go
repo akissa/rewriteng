@@ -68,13 +68,13 @@ func parse(c *caddy.Controller) (rules []*nameRule, err error) {
 			return
 		}
 
-		// STRING
+		// FROM-DOMAIN
 		if !c.NextArg() {
 			return rules, c.ArgErr()
 		}
 		from = c.Val()
 
-		// STRING
+		// TO-DOMAIN
 		if !c.NextArg() {
 			return rules, c.ArgErr()
 		}
@@ -83,11 +83,13 @@ func parse(c *caddy.Controller) (rules []*nameRule, err error) {
 		if innerRule, err = newRule(rule.RuleType, from, to); err != nil {
 			return
 		}
+
 		rule.Rule = innerRule
 
 		for c.NextBlock() {
 			v := c.Val()
 			args := c.RemainingArgs()
+
 			if len(args) < 3 {
 				return rules, c.ArgErr()
 			}
@@ -131,6 +133,7 @@ func checkRuleType(r string) (err error) {
 	case SuffixMatch:
 	case SubstringMatch:
 	case RegexMatch:
+	case NoOpMatch:
 	default:
 		err = fmt.Errorf("invalid rule type %q", r)
 	}

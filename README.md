@@ -12,15 +12,15 @@ The rewriteng plugin rewrites queries and responses
 
 ~~~
 rewriteng CLASS RR-TYPE TYPE FROM-DOMAIN TO-DOMAIN {
-    answer [name|data|both] exact|prefix|suffix|substring|regex|fullregex FROM TO
-    additional [name|data|both] exact|prefix|suffix|substring|regex|fullregex FROM TO
-    authority [name|data|both] exact|prefix|suffix|substring|regex|fullregex FROM TO
+    answer [name|data|both] exact|prefix|suffix|substring|regex|fullregex|noop FROM TO
+    additional [name|data|both] exact|prefix|suffix|substring|regex|fullregex|noop FROM TO
+    authority [name|data|both] exact|prefix|suffix|substring|regex|fullregex|noop FROM TO
 }
 ~~~
 
 * **CLASS** the query class (usually IN or ANY).
 * **RR-TYPE** the query type (A, PTR, ... can be ANY to match all types).
-* **TYPE** the match type, i.e. exact, substring, etc., triggers re-write:
+* **TYPE** the match type, exact|prefix|suffix|substring|regex|fullregex|noop, triggers re-write:
 * **FROM-DOMAIN** the domain to rewrite
 * **TO-DOMAIN** the domain to rewrite to
 
@@ -60,6 +60,7 @@ The match-type is used to match the from, and the following are supported:
 * **suffix**: when the part ends with the matching string
 * **regex**: when the part matches a regular expression and matched regexes are used in the TO
 * **fullregex**: when the part matches a regular expression and matched regexes are not used in the TO
+* **noop**: place holder that does not make any modifications
 
 ## Examples
 

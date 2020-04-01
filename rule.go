@@ -25,9 +25,11 @@ const (
 	RegexMatch = "regex"
 	// FullRegexMatch matchs when the part matches a regular expression and the regex is not used in the rewrite
 	FullRegexMatch = "fullregex"
-	namePart       = "name"
-	dataPart       = "data"
-	bothPart       = "both"
+	// NoOpMatch placeholder that does nothing
+	NoOpMatch = "noop"
+	namePart  = "name"
+	dataPart  = "data"
+	bothPart  = "both"
 )
 
 const (
@@ -81,6 +83,11 @@ type fullRegexRule struct {
 	rrPart      string
 	Pattern     *regexp.Regexp
 	Replacement string
+}
+
+type noOpRule struct {
+	rrPart string
+	From   string
 }
 
 type nameRule struct {
@@ -231,6 +238,25 @@ func (rule *fullRegexRule) RRPart() string {
 	return rule.rrPart
 }
 
+func (rule *noOpRule) Rewrite(ctx context.Context, state request.Request) Result {
+	if rule.From == state.Name() {
+		state.Req.RecursionDesired = true
+		return RewriteDone
+	}
+	return RewriteIgnored
+}
+
+func (rule *noOpRule) Sub(n string) (o string) {
+	if rule.From == n {
+		o = rule.From
+	}
+	return
+}
+
+func (rule *noOpRule) RRPart() string {
+	return rule.rrPart
+}
+
 func (rule *nameRule) Rewrite(ctx context.Context, state request.Request) Result {
 	if rule.RRClass != dns.ClassANY && state.QClass() != rule.RRClass {
 		return RewriteIgnored
@@ -266,12 +292,16 @@ func (rule *nameRule) Sub(n, t, pt string) (o string) {
 }
 
 func newRule(args ...string) (Rule, error) {
+	var numArgs int
 	var rrPart, mt, from, to string
 
-	if len(args) < 3 {
+	numArgs = len(args)
+
+	if numArgs < 3 {
 		return nil, fmt.Errorf("Atleast 3 arguments required")
 	}
-	if len(args) > 3 {
+
+	if numArgs > 3 {
 		rrPart = args[0]
 		mt = args[1]
 		from = args[2]
@@ -341,8 +371,13 @@ func newRule(args ...string) (Rule, error) {
 			rewriteQuestionFromPattern,
 			to,
 		}, nil
+	case NoOpMatch:
+		return &noOpRule{
+			rrPart,
+			from,
+		}, nil
 	default:
-		return nil, fmt.Errorf("Only exact, prefix, suffix, substring, regex, fullregex rule types are supported, received: %s", mt)
+		return nil, fmt.Errorf("Only exact, prefix, suffix, substring, regex, fullregex, noop rule types are supported, received: %s", mt)
 	}
 }
 
