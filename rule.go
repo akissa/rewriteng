@@ -317,7 +317,7 @@ func newRule(args ...string) (Rule, error) {
 		return nil, fmt.Errorf("Only (name, data, both) RR parts are supported, received: %s", rrPart)
 	}
 
-	if mt == ExactMatch || mt == SuffixMatch {
+	if mt == ExactMatch || mt == SuffixMatch || mt == NoOpMatch {
 		if !hasClosingDot(from) {
 			from = from + "."
 		}
